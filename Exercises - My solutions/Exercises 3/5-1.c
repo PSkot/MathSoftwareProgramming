@@ -10,6 +10,7 @@ int main(void){
     printf("%d>", i + 1);
     scanf("%lf", &x[i]);
     y[i] = 1.0/x[i];
+
   }
 
   for(i = 0; i < 5; ++i){
