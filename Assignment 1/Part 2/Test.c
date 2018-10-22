@@ -2,22 +2,22 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "matrix.h"
 
 double ** malloc_array2d(size_t n);
 int fwsubst(unsigned long n, double alpha, double **R, double *b);
 
-int main(void) {
-  unsigned long n = 5;
-  double alpha = 2.5;
-  double **R;
-  double *b;
+int main(int argc, char const *argv[]) {
+  int n = 3;
+  double **RE = malloc_array2d(n);
+  double **CE = malloc_array2d(n);
+  matrix_t R = {.m=n, .n=n, .A=RE};
+  matrix_t C = {.m=n  .n=n, .A=CE};
 
-  R = malloc_array2d(n);
-  b = (double*)malloc(n*sizeof(double));
 
   for(size_t i = 0; i < n; ++i){
     for(size_t j = 0; j < n; ++j){
-      R[i][j] = j+1+5*i;
+      R->A[i][j] = j+1+5*i;
     }
   }
 
@@ -32,6 +32,18 @@ int main(void) {
     b[i] = i+1;
   }
 
+
+    for(size_t k = 1; k < C->n; ++k){
+      double* sum = malloc(C->n*sizeof(double));
+      for(size_t i = 0; i <= k - 1; ++i){
+        for(size_t j = 0; j < C->n; ++j){
+        sum[j] += C->A[i][j]*R->A[i][k];
+        }
+        }
+          C->A[k] = C->A[k] - sum;
+          C->A[k] = fwsubst(C->n, R->A[k][k], R->A, C->A[k]);
+        }
+          return 0;
 
 for(size_t i = 0; i < n; ++i){
   for(size_t j = 0; j < n; ++j){
@@ -63,6 +75,29 @@ int fwsubst(
   double **R,  /* two-dimensional array, row-major */
   double *b    /* one-dimensional array */
   ){
+    //Check positive dimensions and check for overflow
+    //R = malloc_array2d(n);
+    //b = (double*)malloc(n*sizeof(double));
+    /*if (n <= 0 || n*n > SIZE_MAX)
+      return NULL;
+
+    //Allocate memory to R and b
+    R[0] = (double*)malloc(n*n*sizeof(double));
+    if (R[0] == NULL) {
+      free(R);
+      return NULL;
+    }
+    for (size_t i = 1; i < n; i++)
+      R[i] = R[0] + i * n;
+
+    b = (double*)malloc(n*sizeof(double));*/
+
+
+    //Ensure matrix is upper triangular
+    /*for(size_t i = 0; i < n; ++i)
+      for(size_t j = 0; j < n; ++j)
+        if(i > j)
+          R[i][j] = 0;*/
 
     //Calculate first solution element x (overwriting b)
     b[0] /= (alpha + R[0][0]);
@@ -85,7 +120,7 @@ int fwsubst(
       }
 
     //Success
-    return 0;
+    return b[1];
 }
 
 
