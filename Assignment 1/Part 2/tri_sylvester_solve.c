@@ -11,7 +11,7 @@ int tri_sylvester_solve(const matrix_t *R, matrix_t *C){
   (R == NULL) ||
   (C == NULL) ||
   !(C->n == C->m && R->n == R->m && C->n == R->n) ||
-  (C->n <= 0)
+  (C->n == 0)
   )
   {
     return -2;
@@ -22,7 +22,7 @@ int tri_sylvester_solve(const matrix_t *R, matrix_t *C){
 
   //Apply step 1 and 2 for remaining X's (overwriting C)
   for(size_t k = 1; k < C->n; ++k){
-    double* sum = malloc(C->n*sizeof(double));
+    double* sum = (double*)malloc(C->n*sizeof(double));
     for(size_t i = 0; i <= k - 1; ++i){
       for(size_t j = 0; j < C->n; ++j){
       sum[j] += C->A[i][j]*R->A[i][k];
@@ -44,8 +44,8 @@ int tri_sylvester_solve(const matrix_t *R, matrix_t *C){
     }
   }
 
-    //Success
-    return 0;
+  //Success
+  return 0;
 }
 
 double* fwsubst(
