@@ -1,7 +1,8 @@
 #include <stdlib.h>
-#include <math.h>
+#include "matrix.h"
 
-int fwsubst(
+//Forward substitution function
+double* fwsubst(
   unsigned long n,
   double alpha,
   double **R,  /* two-dimensional array, row-major */
@@ -11,7 +12,7 @@ int fwsubst(
     //Calculate first solution element x (overwriting b)
     b[0] /= alpha + R[0][0];
 
-    //Calculate the remaining x's (overwriting b)
+    //Calculate the remaining x's through forward substitution (overwriting b)
     for(size_t k = 1; k < n; ++k){
       double sum = 0.0;
       for(size_t i = 0; i <= k - 1; ++i){
@@ -20,13 +21,6 @@ int fwsubst(
       b[k] = (b[k] - sum)/(alpha + R[k][k]);
     }
 
-    //Check for numerical failure, return -1 if failure
-      for(size_t i = 0; i < n; ++i)
-      {
-        if(!isfinite(b[i]))
-          return -1;
-      }
-
     //Success
-    return 0;
+    return b;
 }
