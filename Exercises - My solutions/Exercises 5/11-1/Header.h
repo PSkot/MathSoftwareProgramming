@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <math.h>
 
-struct Length
+typedef struct Length
 {
 int yards;
 int feet;
 int inches;
-};
+} Length_t;
 
 #endif
