@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 /* Structure representing a sparse matrix in triplet form */
 typedef struct sparse_triplet {
@@ -15,7 +16,17 @@ typedef struct sparse_triplet {
 
 
 
-sparse_t * read_sparse(const char * filename);
+sparse_t * read_sparse(const char * filename){
 
-  sparse_t* q = (sparse_t*)malloc(sizeof(*q));
+  FILE *fp;
+  char buf[20];
+  sparse_t* file = (sparse_t*)malloc(sizeof(sparse_t*));
+
+  if ((fp = fopen(filename, "r")) == NULL) {
+  fprintf(stderr,"Error opening file.\n");
+  exit(EXIT_FAILURE);
+  };
+
   
+
+}
