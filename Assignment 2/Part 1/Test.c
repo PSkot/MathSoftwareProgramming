@@ -9,8 +9,8 @@ extern void print_matrix( char* desc, int m, int n, double* a, int lda );
 extern void print_int_vector( char* desc, int n, int* a );
 
 /* Parameters */
-#define N 5
-#define NRHS 3
+#define N 3
+#define NRHS 1
 #define LDA N
 #define LDB N
 
@@ -21,16 +21,10 @@ int main() {
         /* Local arrays */
         int ipiv[N];
         double a[LDA*N] = {
-            6.80, -2.11,  5.66,  5.97,  8.23,
-           -6.05, -3.30,  5.36, -4.44,  1.08,
-           -0.45,  2.58, -2.70,  0.27,  9.04,
-            8.32,  2.71,  4.35, -7.17,  2.14,
-           -9.67, -5.14, -7.26,  6.08, -6.87
+            -1,1,2,-11,1,5,-3,0,1
         };
         double b[LDB*NRHS] = {
-            4.02,  6.19, -8.22, -7.57, -3.03,
-           -1.56,  4.00, -8.67,  1.75,  2.86,
-            9.81, -4.09, -4.57, -8.61,  8.99
+            -37,-1,10
         };
         /* Executable statements */
         printf( " DGESV Example Program Results\n" );

@@ -2,8 +2,8 @@ CC=gcc
 CFLAGS=-Wall -std=c99
 
 # Assume MSYS2/MinGw -- override below if macOS or Gbar
-CPPFLAGS=-I/mingw64/include/OpenBLAS/lib
-LDFLAGS = -L/mingw64/include/OpenBLAS/lib
+CPPFLAGS=-I/opt/OpenBLAS/lib
+LDFLAGS = -L/opt/OpenBLAS/lib
 LDLIBS=-lopenblas
 
 .PHONY: all clean
@@ -11,7 +11,7 @@ LDLIBS=-lopenblas
 all: Test
 
 clean:
-	-$(RM) *.o
+	-$(RM) Test.o
 	-$(RM) Test
 
 

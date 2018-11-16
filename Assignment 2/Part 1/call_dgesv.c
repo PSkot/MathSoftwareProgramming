@@ -27,27 +27,28 @@ following exceptions: the return value is
    -12 in case of memory allocation errors.
 */
 int call_dgesv(matrix_t * A, vector_t * b) {
-
-
   if(A == NULL || b == NULL) return -9;
   if(A->m != A->n) return -10;
   if(A->n != A->m || A->n || b->n) return -11;
   if(A->A == NULL || A->A[0] == NULL || b->v == NULL) return -12;
 
-  const int n = A->n, nrhs = b->n, LDA = A->n, LDB = b->n;
+  const int n = A->n, nrhs = 1, LDA = A->n, LDB = b->n;
   int info;
-  int* ipiv = (int*)calloc(A->n, sizeof(int*));
+  int ipiv[A->n];
+  double* vec_b = (double*)calloc(n, sizeof(double*));
+  vec_b = b->v;
 
-  matrix_t * A_trans = malloc_matrix(A->m, A->n);
+  matrix_t * A_trans = malloc_matrix(n, n);
 
-  for (unsigned int i = 0; i < A->n; i++) {
-    for (unsigned int j = 0; j < A->n; j++){
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++){
       A_trans->A[j][i] = A->A[i][j];
     }
   }
 
-  dgesv_(&n, &nrhs, *A_trans->A, &LDA, ipiv, b->v, &LDB, &info);
+  dgesv_(&n, &nrhs, *A_trans->A, &LDA, ipiv, vec_b, &LDB, &info);
+
+  free_matrix(A_trans);
 
   return info;
-
 }
