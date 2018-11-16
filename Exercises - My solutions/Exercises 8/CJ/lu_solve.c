@@ -33,7 +33,28 @@ void dtrsv_(
  */
 int lu_solve(int n, double ** M, double * b) {
 
-  /* Insert your code here */
+
+  char uplo, trans, diag;
+  int incx = 1;
+
+  if(M == NULL || M[0] == NULL || b == NULL || n <= 0)  return -1;
+
+  for (int i = 0; i < n; i++) {
+    if(!isnormal(M[i][i])) return -1;
+  }
+
+  uplo = 'U';
+  trans = 'T';
+  diag = 'U';
+
+  dtrsv_(&uplo, &trans, &diag, &n, *M, &n, b, &incx);
+
+  uplo = 'L';
+  trans = 'T';
+  diag = 'N';
+
+  dtrsv_(&uplo, &trans, &diag, &n, *M, &n, b, &incx);
+
 
   return 0;
 }

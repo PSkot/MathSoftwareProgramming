@@ -16,7 +16,10 @@ void daxpy_(
  * The input 'A' represents a two-dimensional row-major array of size m-by-n
  */
 int add_row(double alpha, double **A, int m, int n, int i, int j) {
-    /* Insert your code here */
+    int inc = 1;
+    if (A==NULL || A[0]==NULL || m <= 0 || n <= 0) return -1;
+    if (i == j || i < 0 || j < 0 || i >= m || j >= m) return -1;
+    daxpy_(&n, &alpha, A[i], &inc, A[j], &inc);
     return 0;
 }
 
@@ -25,6 +28,9 @@ int add_row(double alpha, double **A, int m, int n, int i, int j) {
  * The input 'A' represents a two-dimensional row-major array of size m-by-n
  */
 int add_column(double alpha, double **A, int m, int n, int i, int j) {
-    /* Insert your code here */
-    return 0;
+  int inc = n;
+  if (A==NULL || A[0]==NULL || m <= 0 || n <= 0) return -1;
+  if (i == j || i < 0 || j < 0 || i >= n || j >= n) return -1;
+  daxpy_(&m, &alpha, *A+i, &inc, *A+j, &inc);
+  return 0;
 }
