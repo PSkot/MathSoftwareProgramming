@@ -21,10 +21,10 @@ int main() {
         /* Local arrays */
         int ipiv[N];
         double a[LDA*N] = {
-            -1,1,2,-11,1,5,-3,0,1
+            42,1,79,68,70,59,35,25,63
         };
         double b[LDB*NRHS] = {
-            -37,-1,10
+            65,6,46
         };
         /* Executable statements */
         printf( " DGESV Example Program Results\n" );

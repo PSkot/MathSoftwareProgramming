@@ -29,7 +29,7 @@ following exceptions: the return value is
 int call_dgesv(matrix_t * A, vector_t * b) {
   if(A == NULL || b == NULL){
     fprintf(stderr,"Matrix A and/or vector b is NULL\n");
-    return -9;
+    return NULL;
   }
 
   if(A->m != A->n){
@@ -38,7 +38,7 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     free_vector(b);
     A = NULL;
     b = NULL;
-    return -10;
+    return NULL -9;
   }
 
   if(A->n != b->n){
@@ -47,7 +47,7 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     free_vector(b);
     A = NULL;
     b = NULL;
-    return -11;
+    return -10;
   }
 
   if(A->A == NULL || A->A[0] == NULL || b->v == NULL){
@@ -56,7 +56,7 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     free_vector(b);
     A = NULL;
     b = NULL;
-    return -12;
+    return -11;
   }
 
   const int n = A->n, nrhs = 1, LDA = n, LDB = n;
@@ -72,7 +72,7 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     A_trans = NULL;
     A = NULL;
     b = NULL;
-    return EXIT_FAILURE;
+    return -12;
   }
 
   for (int i = 0; i < n; i++) {

@@ -7,11 +7,11 @@ LDFLAGS = -L/opt/OpenBLAS/lib
 LDLIBS=-lopenblas
 objects=$(patsubst %.c,%.o,$(wildcard *.c))
 
-call_dgesv_test: $(objects)
+solve: $(objects)
 
 .PHONY: clean run
 clean:
-	-$(RM) call_dgesv_test $(objects)
+	-$(RM) solve $(objects)
 
 run:
-	./call_dgesv_test
+	./solve A.txt b.txt x.txt
