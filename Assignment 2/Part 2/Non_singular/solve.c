@@ -7,8 +7,8 @@
 int call_dgesv(matrix_t * A, vector_t * b);
 
 int main(int argc, char *argv[]) {
-/*
-  if (argc != 4) {
+
+  /*if (argc != 4) {
     fprintf(stderr,"Usage: %s A b x\n", argv[0]);
     return EXIT_FAILURE;
   }*/
@@ -17,35 +17,48 @@ int main(int argc, char *argv[]) {
   matrix_t* A = read_matrix("A.txt");
   vector_t* b = read_vector("b.txt");
 
-  //Check for numerical errors/invalid input in A
-/*  for (unsigned int i = 0; i < A->n; i++) {
-    for (unsigned int j = 0; j < A->m; j++) {
-      if(!isfinite(A->A[i][j])){
-        fprintf(stderr,"Numerical error in matrix A\n");
-        free_matrix(A);
-        free_vector(b);
-        A = NULL;
-        b = NULL;
-        return EXIT_FAILURE;
-      }
-    }
-  }
-
-  //Check for numerical errors/invalid input in b
-  for (unsigned int i = 0; i < b->n; i++) {
-    if(!isfinite(b->v[i])){
-      fprintf(stderr,"Numerical error in vector b\n");
-      free_matrix(A);
-      free_vector(b);
-      A = NULL;
-      b = NULL;
-      return EXIT_FAILURE;
-    }
-  }
-*/
   //Call function call_dgesv and store return value (info) for error checking
   int info = call_dgesv(A, b);
 
+  //Check NULL input from Call_dgesv
+  if(info == -9){
+    fprintf(stderr,"Call_dgesv: Input A or b is NULL\n");
+    free_matrix(A);
+    free_vector(b);
+    A = NULL;
+    b = NULL;
+    return EXIT_FAILURE;
+  }
+
+  //Check if A is square from Call_dgesv
+  if(info == -10){
+    fprintf(stderr,"Call_dgesv: A is not a square matrix\n");
+    free_matrix(A);
+    free_vector(b);
+    A = NULL;
+    b = NULL;
+    return EXIT_FAILURE;
+  }
+
+  //Check if dimensions of A and b are compatible from Call_dgesv
+  if(info == -11){
+    fprintf(stderr,"Call_dgesv: Dimensions of A and b are incompatible\n");
+    free_matrix(A);
+    free_vector(b);
+    A = NULL;
+    b = NULL;
+    return EXIT_FAILURE;
+  }
+
+  //Check for memory allocation errors from Call_dgesv
+  if(info == -12){
+    fprintf(stderr,"Call_dgesv: Memory allocation error\n");
+    free_matrix(A);
+    free_vector(b);
+    A = NULL;
+    b = NULL;
+    return EXIT_FAILURE;
+  }
 
   //Check for illegal values through info argument in dgesv_
   if(info < 0 && info > -9){
@@ -85,6 +98,12 @@ int main(int argc, char *argv[]) {
       A = NULL;
       b = NULL;
       return EXIT_FAILURE;
+    }
+  }
+
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++){
+      printf("%.2f", A->A[i][j]);
     }
   }
 

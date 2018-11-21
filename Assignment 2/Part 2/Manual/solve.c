@@ -7,45 +7,18 @@
 int call_dgesv(matrix_t * A, vector_t * b);
 
 int main(int argc, char *argv[]) {
-/*
+
   if (argc != 4) {
     fprintf(stderr,"Usage: %s A b x\n", argv[0]);
     return EXIT_FAILURE;
-  }*/
+  }
 
   //Read Matrix A and vector b from files b.txt and A.txt
   matrix_t* A = read_matrix("A.txt");
   vector_t* b = read_vector("b.txt");
 
-  //Check for numerical errors/invalid input in A
-/*  for (unsigned int i = 0; i < A->n; i++) {
-    for (unsigned int j = 0; j < A->m; j++) {
-      if(!isfinite(A->A[i][j])){
-        fprintf(stderr,"Numerical error in matrix A\n");
-        free_matrix(A);
-        free_vector(b);
-        A = NULL;
-        b = NULL;
-        return EXIT_FAILURE;
-      }
-    }
-  }
-
-  //Check for numerical errors/invalid input in b
-  for (unsigned int i = 0; i < b->n; i++) {
-    if(!isfinite(b->v[i])){
-      fprintf(stderr,"Numerical error in vector b\n");
-      free_matrix(A);
-      free_vector(b);
-      A = NULL;
-      b = NULL;
-      return EXIT_FAILURE;
-    }
-  }
-*/
   //Call function call_dgesv and store return value (info) for error checking
   int info = call_dgesv(A, b);
-
 
   //Check for illegal values through info argument in dgesv_
   if(info < 0 && info > -9){

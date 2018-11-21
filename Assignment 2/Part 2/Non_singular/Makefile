@@ -7,7 +7,6 @@ CPPFLAGS=-I/opt/OpenBLAS
 LDFLAGS = -L/opt/OpenBLAS/lib
 LDLIBS=-lopenblas
 
-
 .PHONY: all clean run
 
 all: $(EXECUTABLE)

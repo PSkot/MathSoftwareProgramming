@@ -14,12 +14,8 @@ all: $(EXECUTABLE)
 
 $(EXECUTABLE): matrix_io.o call_dgesv.o solve.o
 
-matrix_io.o: matrix_io.h
-call_dgesv.o: matrix_io.h
-solve.o: matrix_io.h
-
 clean:
 	-$(RM) *.o $(EXECUTABLE)
 
 run: $(EXECUTABLE)
-	-./$< $(ARGS)
+	-./$(EXECUTABLE)
