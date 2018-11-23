@@ -1,4 +1,5 @@
 #include "matrix_io.h"
+#include <math.h>
 
 /* C prototype for LAPACK routine DGESV */
 void dgesv_(const int *n,    /* columns/rows in A          */
@@ -26,12 +27,16 @@ following exceptions: the return value is
    -11 if the dimensions of A and b are incompatible
    -12 in case of memory allocation errors.
 */
+
 int call_dgesv(matrix_t * A, vector_t * b) {
+
+  //Check NULL input A and b
   if(A == NULL || b == NULL){
     fprintf(stderr,"Matrix A and/or vector b is NULL\n");
     return -9;
   }
 
+  //Check if A is a square matrix
   if(A->m != A->n){
     fprintf(stderr,"A is not a square matrix\n");
     free_matrix(A);
@@ -41,6 +46,7 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     return -10;
   }
 
+  //Check compatibility between A and b
   if(A->n != b->n){
     fprintf(stderr,"Dimensions of A and b are incompatible\n");
     free_matrix(A);
@@ -50,6 +56,7 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     return -11;
   }
 
+  //Check memory allocation failure
   if(A->A == NULL || A->A[0] == NULL || b->v == NULL){
     fprintf(stderr,"Memory allocation error\n");
     free_matrix(A);
@@ -59,11 +66,40 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     return -12;
   }
 
+  //Declaration of input
   const int n = A->n, nrhs = 1, LDA = n, LDB = n;
   int info;
   int ipiv[n];
 
+  //Check matrix A for non-finite input
+  for (unsigned int i = 0; i < A->n; i++) {
+    for (unsigned int j = 0; j < A->n; j++) {
+      if(!isfinite(A->A[i][j])){
+        fprintf(stderr, "Invalid input in matrix A\n");
+        free_matrix(A);
+        free_vector(b);
+        A = NULL;
+        b = NULL;
+        return EXIT_FAILURE;
+      }
+    }
+  }
+
+  //Check vector b for non-finite input
+  for (unsigned int i = 0; i < A->n; i++) {
+      if(!isfinite(b->v[i])){
+        fprintf(stderr, "Invalid input in vector b\n");
+        free_matrix(A);
+        free_vector(b);
+        A = NULL;
+        b = NULL;
+        return EXIT_FAILURE;
+      }
+  }
+
+  //Allocate and check matrix for transposing A into row-major
   matrix_t * A_trans = malloc_matrix(n, n);
+
   if(A_trans == NULL || A_trans->A == NULL || A_trans->A[0] == NULL){
     fprintf(stderr,"Memory allocation failure\n");
     free_matrix(A_trans);
@@ -81,11 +117,13 @@ int call_dgesv(matrix_t * A, vector_t * b) {
     }
   }
 
+  //Free A
   free_matrix(A);
   A = NULL;
 
   dgesv_(&n, &nrhs, *A_trans->A, &LDA, ipiv, b->v, &LDB, &info);
 
+  //Free A_trans
   free_matrix(A_trans);
   A_trans = NULL;
 

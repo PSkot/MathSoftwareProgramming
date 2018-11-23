@@ -1,13 +1,14 @@
 #include "matrix_io.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
-double **malloc_array2d(size_t n);
+double **malloc_array2d(size_t n, size_t m);
 int call_dgesv(matrix_t * A, vector_t * b);
 
 int main(int argc, char const *argv[]) {
   const int n = 3;
-  double **RE = malloc_array2d(n);
+  double **RE = malloc_array2d(n, n);
   double *BE = (double*)calloc(n, sizeof(double*));
   matrix_t A = {.m=n, .n=n, .A=RE};
   vector_t b = {.n=n, .v=BE};
