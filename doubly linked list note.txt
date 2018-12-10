@@ -1,0 +1,1 @@
+Doubly linked lists: Each element has reference to the next one (which is why O(n) on average to access elements)
